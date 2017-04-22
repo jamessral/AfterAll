@@ -1,6 +1,8 @@
 -- GLOBALS
 SCALE_FACTOR = 2
 
+love.graphics.setDefaultFilter("nearest", "nearest")
+
 function drawImage(image, x, y)
   love.graphics.draw(image, x, y, 0, SCALE_FACTOR, SCALE_FACTOR, 0, 0, 0, 0)
 end
@@ -47,5 +49,6 @@ function love.update(dt)
 end
 
 function love.draw()
+  love.graphics.setBackgroundColor(190, 235, 190)
   drawImage(player.baseImage, player.x, player.y)
 end
