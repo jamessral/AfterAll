@@ -10,7 +10,7 @@ end
 -- World
 world = {}
 world.WIDTH = 640
-world.HEIGHT = 360
+world.HEIGHT = 320
 world.x = 0
 world.scroll = function (speed, dt)
   world.x = world.x - speed * dt
@@ -106,22 +106,32 @@ player.move = function (dt)
     local isScrolling = false
 
     if (player.x >= world.WIDTH - world.WIDTH * 0.2) and right then
-      world.scroll(speed, dt)
-      right = false
-      isScrolling = true
+      if world.x <= 0 and world.x >= -world.WIDTH + 10 then
+        world.scroll(speed, dt)
+        right = false
+        isScrolling = true
+      else
+        right = false
+        isScrolling = false
+      end
     end
 
     if (player.x <= 20) and left then
-      world.scroll(-speed, dt)
-      left = false
-      isScrolling = true
+      if world.x >= -world.WIDTH and world.x <= -10 then
+        world.scroll(-speed, dt)
+        left = false
+        isScrolling = true
+      else
+        left = false
+        isScrolling = false
+      end
     end
 
     if (player.y <= 250) and up then
       up = false
     end
 
-    if (player.y >= world.HEIGHT - 16 - 20) and down then
+    if (player.y >= world.HEIGHT + 6) and down then
       down = false
     end
 
@@ -150,6 +160,8 @@ enemy1 = {}
 enemy2 = {}
 
 function love.load()
+  world.x = 0
+  world.y = 0
   world.backgroundImage = love.graphics.newImage("assets/background.png")
   player.baseImage = love.graphics.newImage("assets/nuclearMan1.png")
   -- player walking images
@@ -178,4 +190,7 @@ function love.draw()
   love.graphics.setBackgroundColor(190, 235, 190)
   love.graphics.draw(world.backgroundImage, world.x, 0, 0, 1, 1.2, 0, 0, 0, 0)
   player.drawPlayer(player.currentImage, player.x, player.y)
+
+  -- use this for printf debugging!
+  -- love.graphics.print(player.y, 50, 50)
 end
