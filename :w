@@ -143,9 +143,7 @@ function Player:move(world, dt)
   local shouldScrollLeft = (self.x <= self.WIDTH + self.SCROLL_OFFSET) and left
 
   if shouldScrollLeft then
-    local canScrollLeft = (world.x >= -world.WIDTH) and
-        (world.x <= -self.SCROLL_OFFSET)
-
+    local canScrollLeft = world.x >= -world.WIDTH and world.x <= -self.SCROLL_OFFSET
     if canScrollLeft then
       world:scroll(-speed, dt)
       left = false

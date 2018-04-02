@@ -3,7 +3,6 @@ local World = { __type = "World"}
 World.__index = World
 
 function World.new(width, height)
-  -- Global Singleton
   local world = {}
 
   world.WIDTH = width or 640
