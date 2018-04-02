@@ -2,16 +2,10 @@
 local Player = { __type = 'Player' }
 Player.__index = Player
 
--- Get constructor function by name
-setmetatable(Player, {
-  __call = function(cls, ...)
-    return cls.new(...)
-  end
-})
-
 function Player:new(x, y)
   local player = {}
 
+  player.world = world
   player.x = x or 300
   player.xDirection = 1
   player.y = y or 300
@@ -25,6 +19,8 @@ function Player:new(x, y)
   player.currentShootingIndex = 1
   player.walkingImages = {}
   player.shootingImages = {}
+  player.SCROLL_OFFSET = 50
+  player.WIDTH = 16
 
   return setmetatable(player, Player)
 end
@@ -99,7 +95,7 @@ function Player:shoot(dt)
   end
 end
 
-function Player:move(dt)
+function Player:move(world, dt)
   local up = false
   local down = false
   local left = false
@@ -125,8 +121,11 @@ function Player:move(dt)
   -- make sure self doesn't go off screen
   local isScrolling = false
 
+  -- move the background if player gets close to edge and there is more
+  -- background to be seen yet
+
   if (self.x >= world.WIDTH - world.WIDTH * 0.2) and right then
-    if world.x <= 0 and world.x >= -world.WIDTH + 10 then
+    if world.x <= 0 and world.x >= -world.WIDTH - self.SCROLL_OFFSET - self.WIDTH then
       world:scroll(speed, dt)
       right = false
       isScrolling = true
@@ -136,8 +135,8 @@ function Player:move(dt)
     end
   end
 
-  if (self.x <= 20) and left then
-    if world.x >= -world.WIDTH and world.x <= -10 then
+  if (self.x <= self.WIDTH + self.SCROLL_OFFSET) and left then
+    if world.x >= -world.WIDTH and world.x <= -self.SCROLL_OFFSET then
       world:scroll(-speed, dt)
       left = false
       isScrolling = true

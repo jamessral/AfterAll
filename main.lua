@@ -11,14 +11,14 @@ function drawImage(image, x, y)
   love.graphics.draw(image, x, y, 0, SCALE_FACTOR, SCALE_FACTOR, 0, 0, 0, 0)
 end
 
--- World (Global Singleton)
-world = World()
+-- World
+local world = World.new()
 
 -- Enemies
 enemy1 = {}
 
 -- Player
-local player = Player()
+local player = Player.new()
 
 -- Enemy1
 enemy1 = {}
@@ -33,7 +33,7 @@ function love.load()
 end
 
 function love.update(dt)
-  player:move(dt)
+  player:move(world, dt)
   player:animate(dt)
   player:shoot(dt)
 end

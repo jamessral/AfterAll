@@ -2,15 +2,9 @@
 local World = { __type = "World"}
 World.__index = World
 
-setmetatable(World, {
-  __call = function(cls, ...)
-    return cls.new(...)
-  end
-})
-
 function World.new(width, height)
   -- Global Singleton
-  world = {}
+  local world = {}
 
   world.WIDTH = width or 640
   world.HEIGHT = height or 320
